@@ -6,13 +6,13 @@ When a student comes by one of the multiple student fabrication facilities at th
 
 The natural solution is enabling immediate communication between facilities about 1) what shop tools and shop processes a student has received formal training on and 2) how long ago the student received the formal training. The spontaneous nature of the visits our proposal addresses would be best-served by a network-accessible database of student certifications which is fast in look-up and secure in logging. The data it would store is not sensitive.
 
-Components Satisfying Project Requirements:
+######Components Satisfying Project Requirements######
 * Employees can create new student accounts
 * Employees can add certifications to student accounts
 * Employees can modify and delete certifications they have created
 * Employees and students can read certifications of a student account
 * Student account search assisted by real-time search suggestion generation (ajax)
 
-Users: Fabrication Facility Employees (Typically 50+ year-old professionals)
-
-Stakeholders: Students, UofR Central Server personnel, University Authentication Services personnel
+######Target Audience######
+* Users: Fabrication Facility Employees (Typically 50+ year-old professionals)
+* Stakeholders: Students, UofR Central Server personnel, University Authentication Services personnel
