@@ -1,6 +1,9 @@
 CSC 210 Project Proposal
 =
 UR Cross-Facility Fabrication Ability Communicator - (UR XFAC)
+=
+Moses Chen == mchen37@u.rochester.edu
+Yaron Adar == yadar@u.rochester.edu
 -
 When a student comes by one of the multiple student fabrication facilities at the UofR, the employee in charge will grant  permission based on previous training or, given insufficient training, train the student. Currently, if a student claims they gained training at a different facility, the employee has no way to immediately verify that the student is trained and refreshed on specific equipment. An uncomfortable gray area is navigated between trust and potentially wasted time.
 
