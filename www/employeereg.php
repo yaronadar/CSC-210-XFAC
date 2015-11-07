@@ -1,5 +1,10 @@
 <?php
 
+/*
+Moses Chen - mchen37@u.rochester.edu
+Yaron Adar - yadar@u.rochester.edu
+*/
+
 $servername = "localhost";
 $username = "root";
 $password = "mysql";
