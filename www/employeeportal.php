@@ -1,4 +1,8 @@
 <?php
+/*
+Moses Chen - mchen37@u.rochester.edu
+Yaron Adar - yadar@u.rochester.edu
+*/
 $employee_netid = $_POST["netid"];
 
 $servername = "localhost";
