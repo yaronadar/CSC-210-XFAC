@@ -2,11 +2,16 @@
 Moses Chen - mchen37@u.rochester.edu
 Yaron Adar - yadar@u.rochester.edu
 -->
-
+<?php
+if (isset($_COOKIE['netid'])) {
+    header("Location: profile.php");
+    exit;
+}
+?>
 <html>
 	<head>
 		<title>
-			UR XFAC - Registration
+			UR XFAC - Login
 		</title>
 		<style>
 			div#nav {
@@ -59,7 +64,10 @@ Yaron Adar - yadar@u.rochester.edu
 			   color: #FFFFFF;
 			   background-color: #0052CC;
 			}
-			div#registration {
+			div#login {
+				text-align: center;
+			}
+			a {
 				text-align: center;
 			}
 		</style>
@@ -69,36 +77,41 @@ Yaron Adar - yadar@u.rochester.edu
 		
 		<div id="nav">
 			 <ul>
-				<li><a href="home.html">Home</a></li>
+				<li><a href="home.php">Home</a></li>
 				<li><a href="profile.php">My Profile</a></li>
-				<li><a href="portal.html">Portal</a></li>
-				<li><a href="login.html">Login</a></li>
+				<li><a href="portal.php">Portal</a></li>
+				<li><a href="login.php">Login</a></li>
 				<li><a href="registration.html">Registration</a></li>
 			</ul>
 		</div>
 		
 		<h1 style="font-family:verdana;text-align:center">
-			Registration
+			Login
 		</h1>
 		
 		<br/>
 		
-		<div id="registration">
-			<form method="post" action="cgi-bin/registration.py">
+		<?php
+		if(isset($_GET['error'])) {
+			echo '<div style="text-align:center">';
+			echo 'Username/password invalid. Please try again.';
+			echo '</div>';
+			echo '</br>';
+		}
+		?>
+		
+		<div id="login">
+			<form name="login" method="post" action="authenticate.php">
 				NetID: <input name="netid" type=text size="30"/>
-				</br>
-				First: <input name="first" type=text size="30"/>
-				</br>
-				Last: <input name="last" type=text size="30"/>
 				<br/>
 				<input type="submit" value="Submit"/> <input type="reset"value="Cancel"/>
 			</form>
 		</div>
 		
 		<div style="text-align:center">
-			Already have an account?
+			Don't have an account yet?
 			</br>
-			<a href="login.html">Log In</a>
+			<a href="registration.html">Registration</a>
 		</div>
 	</body>
 </html>

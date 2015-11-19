@@ -2,11 +2,17 @@
 Moses Chen - mchen37@u.rochester.edu
 Yaron Adar - yadar@u.rochester.edu
 -->
-
+<?php
+session_start();
+if (!isset($_COOKIE['netid'])) {
+    header("Location: login.php");
+    exit;
+}
+?>
 <html>
 	<head>
 		<title>
-			UR XFAC - Login
+			UR XFAC - Profile
 		</title>
 		<style>
 			div#nav {
@@ -72,32 +78,18 @@ Yaron Adar - yadar@u.rochester.edu
 		
 		<div id="nav">
 			 <ul>
-				<li><a href="home.html">Home</a></li>
+				<li><a href="home.php">Home</a></li>
 				<li><a href="profile.php">My Profile</a></li>
-				<li><a href="portal.html">Portal</a></li>
-				<li><a href="login.html">Login</a></li>
-				<li><a href="registration.html">Registration</a></li>
+				<li><a href="portal.php">Portal</a></li>
+				<li><a href="logout.php">Logout</a></li>
 			</ul>
 		</div>
 		
 		<h1 style="font-family:verdana;text-align:center">
-			Login
+			Profile
 		</h1>
 		
 		<br/>
 		
-		<div id="login">
-			<form method="post" action="cgi-bin/login.py">
-				NetID: <input name="netid" type=text size="30"/>
-				<br/>
-				<input type="submit" value="Submit"/> <input type="reset"value="Cancel"/>
-			</form>
-		</div>
-		
-		<div style="text-align:center">
-			Don't have an account yet?
-			</br>
-			<a href="registration.html">Registration</a>
-		</div>
 	</body>
 </html>

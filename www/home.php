@@ -2,7 +2,6 @@
 Moses Chen - mchen37@u.rochester.edu
 Yaron Adar - yadar@u.rochester.edu
 -->
-
 <html>
 	<head>
 		<title>
@@ -66,11 +65,18 @@ Yaron Adar - yadar@u.rochester.edu
 		
 		<div id="nav">
 			 <ul>
-				<li><a href="home.html">Home</a></li>
+				<li><a href="home.php">Home</a></li>
 				<li><a href="profile.php">My Profile</a></li>
 				<li><a href="portal.html">Portal</a></li>
-				<li><a href="login.html">Login</a></li>
-				<li><a href="registration.html">Registration</a></li>
+				<?php
+				if (isset($_COOKIE['netid'])) {
+					echo '<li><a href="logout.php">Logout</a></li>';
+				}
+				else {
+					echo '<li><a href="login.php">Login</a></li>';
+					echo '<li><a href="registration.html">Registration</a></li>';
+				}
+				?>
 			</ul>
 		</div>
 		
