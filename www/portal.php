@@ -1,5 +1,13 @@
+<!--
+Moses Chen - mchen37@u.rochester.edu
+Yaron Adar - yadar@u.rochester.edu
+-->
 <?php
-$employee_netid = $_SESSION['xfacusername'];
+if (!isset($_COOKIE['netid']) || !isset($_COOKIE['pass'])) {
+    header("Location: login.php");
+    exit;
+}
+$employee_netid = $_COOKIE['netid'];
 $visitor_netid = $_POST["visitor_netid"];
 
 //SETUP THE CONNECTION
@@ -30,7 +38,7 @@ $result1 = mysqli_fetch_assoc(mysqli_query($conn, $sql));
 
 	
 if(!$result1){
-	$error = $error."and empty employee result";
+	$error = $error." and empty employee result";
 }
 //Get Visitor Information
 
@@ -42,7 +50,7 @@ $result2 = mysqli_fetch_assoc(mysqli_query($conn, $sql));
 
 
 if(!$result2){
-	$error = $error."and empty visitor result";
+	$error = $error." and empty visitor result";
 }
 
 //Get Visitor's Abilities Information
@@ -50,7 +58,7 @@ $sql = "SELECT * FROM Abilities WHERE visitor_netid='$visitor_netid'";
 $result3 = mysqli_query($conn, $sql);
 $abilities = array();//array to hold the visitor's abilities info
 
-	//Create an array of ability and corresponding employee/facility info
+//Create an array of ability and corresponding employee/facility info
 $ability_count = 0;
 while($row1 = mysqli_fetch_assoc($result3)) {
 	$ability_employee = $row1["employee_netid"];
@@ -59,26 +67,102 @@ while($row1 = mysqli_fetch_assoc($result3)) {
 	
 	$ability_count++;
 }
+
+mysqli_close($conn);
 ?>
 
 <!--WEBPAGE HTML-->
 <html>
-<head>
-<title>XFAC Employee Portal</title>
-</head>
-<header>
-<img src="URXFAC.png" />
-Employee Portal
-</header>
-<body>
+	<head>
+		<title>
+			UR XFAC - Portal
+		</title>
+		<style>
+			div#nav {
+				margin: 0;
+				padding: .3em 0 .3em 0;
+				background: #80B3FF;
+				width: 100%;
+				text-align: center;
+			}
+			div#nav ul {
+			   list-style: none;
+			   margin: 0;
+			   padding: 0;
+			}
+			div#nav ul li {
+			   margin: 0;
+			   padding: 0;
+			   display: inline;
+			}
+			div#nav ul a:link {
+			   margin: 0;
+			   padding: .3em .4em .3em .4em;
+			   text-decoration: none;
+			   font-weight: bold;
+			   font-size: medium;
+			   color: #0047B3;
+			}
+			div#nav ul a:visited {
+			   margin: 0;
+			   padding: .3em .4em .3em .4em;
+			   text-decoration: none;
+			   font-weight: bold;
+			   font-size: medium;
+			   color: #0052CC;
+			}
+			div#nav ul a:active {
+			   margin: 0;
+			   padding: .3em .4em .3em .4em;
+			   text-decoration: none;
+			   font-weight: bold;
+			   font-size: medium;
+			   color: #0052CC;
+			}
+			div#nav ul a:hover {
+			   margin: 0;
+			   padding: .3em .4em .3em .4em;
+			   text-decoration: none;
+			   font-weight: bold;
+			   font-size: medium;
+			   color: #FFFFFF;
+			   background-color: #0052CC;
+			}
+		</style>
+	</head>
+	<body>
+		<img src="URXFAC.png"/>
+		
+		<div id="nav">
+			 <ul>
+				<li><a href="home.php">Home</a></li>
+				<li><a href="profile.php">Profile</a></li>
+				<li><a href="portal.php">Portal</a></li>
+				<?php
+				if (isset($_COOKIE['netid']) && isset($_COOKIE['pass'])) {
+					echo '<li><a href="logout.php">Logout</a></li>';
+				}
+				else {
+					echo '<li><a href="login.php">Login</a></li>';
+					echo '<li><a href="registration.php"> Registration</a></li>';
+				}
+				?>
+			</ul>
+		</div>
+		
+		<h1 style="font-family:verdana;text-align:center">
+			Portal
+		</h1>
+		
+		</br>
 
 <?php
 echo "<div>";
-echo $error;
+//echo $error;
 echo "<table width=\"100%\" border=\"1\" cellpadding=\"10\">";
 echo "<tr>";
 	echo "<th>My Name</th>";
-    echo "<th>My NETID</th>";
+    echo "<th>My NetID</th>";
     echo "<th>My Facility</th>";
     echo "<th>My Email</th>";
 echo "</tr>";
@@ -89,8 +173,6 @@ echo "<tr>";
     echo "<td>".$email."</td>";
 echo "</tr>";
 echo "</table>";
-echo "<a href=\"employeeedit.php?netid=".$employee_netid."\">Edit My Info</a><br />";
-echo "<a href=\"#\">Delete My XFAC Employee Account</a>";
 echo "<hr />";
 echo "</div>";
 ?>
@@ -183,21 +265,10 @@ if(is_null($visitor_netid)){
 	echo "<a href=\"#\">Delete This Visitor</a>";
 
 	echo "</tr>";
-echo "</table>";
-
-
-
+	echo "</table>";
 }
-
-
 echo "<hr />";
 echo "</div>";
-
-
-
-
 echo "</body>";
 echo "</html>";
-
-
 ?>

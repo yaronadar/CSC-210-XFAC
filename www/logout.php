@@ -3,7 +3,7 @@ Moses Chen - mchen37@u.rochester.edu
 Yaron Adar - yadar@u.rochester.edu
 -->
 <?php
-if (!isset($_COOKIE['netid'])) {
+if (!isset($_COOKIE['netid']) || !isset($_COOKIE['pass'])) {
     header("Location: login.php");
     exit;
 }
@@ -72,8 +72,8 @@ if (!isset($_COOKIE['netid'])) {
 		<div id="nav">
 			 <ul>
 				<li><a href="home.php">Home</a></li>
-				<li><a href="profile.php">My Profile</a></li>
-				<li><a href="portal.html">Portal</a></li>
+				<li><a href="profile.php">Profile</a></li>
+				<li><a href="portal.php">Portal</a></li>
 				<li><a href="logout.php">Logout</a></li>
 			</ul>
 		</div>

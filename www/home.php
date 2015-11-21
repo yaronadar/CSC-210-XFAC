@@ -66,15 +66,15 @@ Yaron Adar - yadar@u.rochester.edu
 		<div id="nav">
 			 <ul>
 				<li><a href="home.php">Home</a></li>
-				<li><a href="profile.php">My Profile</a></li>
-				<li><a href="portal.html">Portal</a></li>
+				<li><a href="profile.php">Profile</a></li>
+				<li><a href="portal.php">Portal</a></li>
 				<?php
-				if (isset($_COOKIE['netid'])) {
+				if (isset($_COOKIE['netid']) && isset($_COOKIE['pass'])) {
 					echo '<li><a href="logout.php">Logout</a></li>';
 				}
 				else {
 					echo '<li><a href="login.php">Login</a></li>';
-					echo '<li><a href="registration.html">Registration</a></li>';
+					echo '<li><a href="registration.php"> Registration</a></li>';
 				}
 				?>
 			</ul>

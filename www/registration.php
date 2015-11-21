@@ -3,7 +3,7 @@ Moses Chen - mchen37@u.rochester.edu
 Yaron Adar - yadar@u.rochester.edu
 -->
 <?php
-if (isset($_COOKIE['netid'])) {
+if (isset($_COOKIE['netid']) && isset($_COOKIE['pass'])) {
     header("Location: profile.php");
     exit;
 }
@@ -89,16 +89,19 @@ if (isset($_COOKIE['netid'])) {
 		<br/>
 		
 		<div id="registration">
-			<form method="post" action="cgi-bin/registration.py">
-				NetID: <input name="netid" type=text size="30"/>
-				</br>
-				First: <input name="first" type=text size="30"/>
-				</br>
-				Last: <input name="last" type=text size="30"/>
+			<form method="post" action="employeereg.php">
+				NetID: <input name="employee_netid" type=text size="30"/><br/>
+				Password: <input name="password" type=password size="30"/><br/>
+				First Name: <input name="firstname" type=text size="30"/><br/>
+				Last Name: <input name="lastname" type=text size="30"/><br/>
+				Facility Name (Formal): <input name="facility" type=text size="30"/><br/>
+				UofR Email Address: <input name="email" type=text size="30"/><br/>
 				<br/>
 				<input type="submit" value="Submit"/> <input type="reset"value="Cancel"/>
 			</form>
 		</div>
+		
+		</br>
 		
 		<div style="text-align:center">
 			Already have an account?

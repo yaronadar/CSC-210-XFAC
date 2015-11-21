@@ -29,15 +29,13 @@ $result = mysqli_query($conn, $query);
 $email = mysqli_fetch_object($result)->email;
 $result = mysqli_query($conn, $query);
 $facility = mysqli_fetch_object($result)->facility;
-$result = mysqli_query($conn, $query);
-$date = mysqli_fetch_object($result)->reg_date;
 
 mysqli_close($conn);
 ?>
 <html>
 	<head>
 		<title>
-			UR XFAC - Profile
+			UR XFAC - Edit Profile
 		</title>
 		<style>
 			div#nav {
@@ -111,45 +109,44 @@ mysqli_close($conn);
 		</div>
 		
 		<h1 style="font-family:verdana;text-align:center">
-			Profile
+			Edit Profile
 		</h1>
 		
 		<br/>
 		
-		<div name="profile" style="width:25%; margin: 0px auto; text-align:left">
-			<?php
-			echo "NetID: ".$netid;
-			echo "</br>";
-			echo "First Name: ".$first;
-			echo "</br>";
-			echo "Last Name: ".$last;
-			echo "</br>";
-			echo "Email: ".$email;
-			echo "</br>";
-			echo "Facility: ".$facility;
-			echo "</br>";
-			echo "Date Registered: ".$date;
-			?>
+		<div id="edit" style="text-align:center">
+			<form name="edit" method="post" action="edit.php">
+				<?php
+				echo '<input hidden name="netid" type=text value="'.$netid.'"/>';
+				echo 'First Name: <input name="first" type=text value="'.$first.'" size="30"/>';
+				echo '</br>';
+				echo 'Last Name: <input name="last" type=text value="'.$last.'" size="30"/>';
+				echo '</br>';
+				echo 'Email: <input name="email" type=text value="'.$email.'" size="30"/>';
+				echo '</br>';
+				echo 'Facility: <input name="facility" type=text value="'.$facility.'" size="30"/>';
+				?>
+				<br/>
+				<input type="submit" value="Submit"/> <input type="reset"value="Cancel"/>
+			</form>
 		</div>
 		
-		</br>
-		
-		<div style="text-align:center">
-			<button onclick="editProfile()">Edit Profile</button>
-			</br>
-			</br>
-			</br>
-			<button onclick="deleteAccount()">Delete Account</button>
-			
-			<script>
-			function editProfile() {
-				window.location.replace("/editprofile.php");
+		<?php
+		if (isset($_GET['return'])) {
+			$return = $_GET['return'];
+			if ($return == 1) {
+				echo '<div style="text-align:center">';
+				echo 'Profile updated successfully.';
+				echo '</div>';
+				echo '</br>';
 			}
-			function deleteAccount() {
-				window.location.replace("/delete.php");
+			else {
+				echo '<div style="text-align:center">';
+				echo 'Error while updating profile. Please try again.';
+				echo '</div>';
+				echo '</br>';
 			}
-			</script>
-		</div>
-		
+		}
+		?>
 	</body>
 </html>
