@@ -187,6 +187,43 @@ mysqli_close($conn);
 	</head>
 <body>
 <script>
+//ABILITY ADDITION FORM UPDATER
+	function addAbility(netid){
+		var div = document.getElementById("editability");
+		div.innerHTML = "";//Clear the div content
+	
+		div.innerHTML += "Add an ability for " + netid + ":<br />";
+		div.innerHTML += "<form>";
+		div.innerHTML += "Ability: <input type = \"text\" id=\"ability\" ><br />";
+		div.innerHTML += "Note: <input type = \"text\" id=\"note\"><br />";
+		div.innerHTML += "Date: <input type = \"text\" id=\"date\"><br />";
+		div.innerHTML += "<input type=\"submit\" value=\"Submit\"></form>";
+		
+	}
+//ABILITY EDITION FORM UPDATER
+	function editAbility(id){
+		var div = document.getElementById("editability");
+		div.innerHTML = "";//Clear the div content
+		
+		var xmlhttp = new XMLHttpRequest();
+		
+		xmlhttp.onreadystatechange = function(){
+			if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+				
+				var obj = JSON.parse(xmlhttp.responseText);
+				div.innerHTML += "Edit the following ability for " + obj.Ability[0].visitor_netid + ":<br />";
+				div.innerHTML += "<form>";
+				div.innerHTML += "Ability: <input type = \"text\" id=\"ability\" value=\"" + obj.Ability[0].ability + "\"><br />";
+				div.innerHTML += "Note: <input type = \"text\" id=\"note\" value=\"" + obj.Ability[0].note + "\"><br />";
+				div.innerHTML += "Date: <input type = \"text\" id=\"date\" value=\"" + obj.Ability[0].date + "\"><br />";
+				div.innerHTML += "<input type=\"submit\" value=\"Submit\"></form>";
+			}	
+		
+		};
+		xmlhttp.open("GET", "getAbilityInfo.php?q=" + id, true);
+		xmlhttp.send();
+	}
+
 //INFORMATION TABLE UPDATER
 		function displayInfo(str){
 			
@@ -207,20 +244,22 @@ mysqli_close($conn);
 					row.insertCell(0).innerHTML = obj.Info[0].firstname + " " + obj.Info[0].lastname;
 					row.insertCell(1).innerHTML = obj.Info[0].visitor_netid;
 					
-					//construct Abilities table
+					//Construct Abilities table as a concatenated string
 					if(obj.Abilities.length == 0){
-						abilitiesTableString = "No Abilities on Record";
+						abilitiesTableString = "No Abilities on Record -- ";
 					} else {
-						abilitiesTableString = "<table id=\"abilities\" width=100% cellpadding=\"5\">";
+						abilitiesTableString = "<table width=100% border=\"0\" cellpadding=\"5\">";
 						
-						abilitiesTableString += "<tr><th>Ability</th><th>Facility</th><th>Date</th><th>Note</th></tr>";
+						abilitiesTableString += "<tr><th>Ability</th><th>Facility</th><th>Date</th><th>Note</th><th></th></tr>";
 						//Insert all ability rows after header row
 						for(r = 0; r < obj.Abilities.length; r++){
 							
-							abilitiesTableString += "<tr><td>" + obj.Abilities[r].ability + "</td><td>" + obj.Abilities[r].facility + "</td><td>" + obj.Abilities[r].date + "</td><td>" + obj.Abilities[r].note + "</td></tr>";
+							abilitiesTableString += "<tr><td>" + obj.Abilities[r].ability + "</td><td>" + obj.Abilities[r].facility + "</td><td>" + obj.Abilities[r].date + "</td><td>" + obj.Abilities[r].note + "</td><td><a onClick=\"editAbility('" + obj.Abilities[r].id + "')\" href=\"#\">Edit/Delete</a></td></tr>";
 							
 						}
+						
 					}
+					abilitiesTableString += "<tr><td><a onClick=\"addAbility('" + obj.Info[0].visitor_netid + "')\" href=\"#\">Add Ability</a></td></tr>";
 					row.insertCell(2).innerHTML = abilitiesTableString;
 				
 				}
@@ -230,9 +269,13 @@ mysqli_close($conn);
 			xmlhttp.send();
 				
 		}
-		
+
+
 		//SEARCH TABLE UPDATER
 		function showVisitors(str){
+		
+		
+		
 			var table = document.getElementById("possVisitors");
 			//clear the table to remove old results and indicators
 			for(var i=0; i <= table.rows.length; i++){
@@ -340,6 +383,9 @@ Search by Visitor NetID or Name:
 		<th>Abilities</th>
 	</tr>
 </table>
+
+<div id="editability" width="100%" border="1" cellpadding="10">
+</div>
 
 </div>
 </body>
