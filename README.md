@@ -1,8 +1,9 @@
 # CSC-210-XFAC
 ####Yaron Adar and Moses Chen
 
-Home
-![Home](https://raw.githubusercontent.com/yaronadar/CSC-210-XFAC/master/images/home.png)
+![Slide 1](https://raw.githubusercontent.com/yaronadar/CSC-210-XFAC/master/images/slide1.jpg)
+
+![Slide 2](https://raw.githubusercontent.com/yaronadar/CSC-210-XFAC/master/images/slide2.jpg)
 
 Registration
 ![Registration](https://raw.githubusercontent.com/yaronadar/CSC-210-XFAC/master/images/registration.png)
