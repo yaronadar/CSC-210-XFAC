@@ -1,0 +1,45 @@
+#nav {
+	text-align: center;
+	width: 100%;
+}
+.logo {
+	padding-left: 20px;
+	display: inline;
+	float:left;
+}
+nav {
+	background-color: #ffffff;
+	border-radius: 5px;
+	display: inline-block;
+	margin: 10px 20px 10px 20px;
+	overflow: hidden;
+	width: 90%;
+}
+nav ul {
+	margin: 0;
+	padding: 0;
+	text-align: left;
+}
+nav ul li {
+	display: inline-block;
+	list-style-type: none;
+
+	-webkit-transition: all 0.2s;
+	-moz-transition: all 0.2s;
+	-ms-transition: all 0.2s;
+	-o-transition: all 0.2s;
+	transition: all 0.2s; 
+}
+nav > ul > li > a {
+	color: #000000;
+	display: block;
+	line-height: 55px;
+	padding: 0 24px;
+	text-decoration: none;
+}
+nav > ul > li:hover {
+	background-color: rgb(40, 44, 47);
+}
+nav > ul > li:hover > a {
+	color: rgb(255, 255, 255);
+}

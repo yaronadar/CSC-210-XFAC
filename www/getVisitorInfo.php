@@ -1,4 +1,7 @@
 <?php
+//Moses Chen - mchen37@u.rochester.edu
+//Yaron Adar - yadar@u.rochester.edu
+
 //Get input and initialize output
 $visitor_netid = $_REQUEST["q"];
 $return = array();
@@ -37,9 +40,5 @@ while($row1 = mysqli_fetch_assoc($result2)) {
 	
 	$ability_count++;
 }
-
-
 echo "{\"Info\":[".json_encode($visitor)."], \"Abilities\":".json_encode($abilities)."}";
-
-
 ?>

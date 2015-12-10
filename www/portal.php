@@ -3,30 +3,25 @@ Moses Chen - mchen37@u.rochester.edu
 Yaron Adar - yadar@u.rochester.edu
 -->
 <?php
-if (!isset($_COOKIE['netid']) || !isset($_COOKIE['pass'])) {
+$verified = (include 'verifyCookie.php');
+if (!$verified) {
     header("Location: login.php");
     exit;
 }
 $employee_netid = $_COOKIE['netid'];
 $visitor_netid = $_POST["visitor_netid"];
-
 //SETUP THE CONNECTION
 $servername = "localhost";
 $username = "root";
 $password = "mysql";
 $dbname = "xfac";
 $error = " ";
-
 $conn = mysqli_connect($servername, $username, $password, $dbname);
-
 if(!$conn){
 	die("Connection failed: ".$conn->connect_error);
 	$error = $error."dead connection";
 }
-
-
 //DATABASE QUERIES
-
 //Get Employee Information
 $sql = "SELECT * FROM Employees WHERE employee_netid='$employee_netid'";
 $result1 = mysqli_fetch_assoc(mysqli_query($conn, $sql));
@@ -35,29 +30,23 @@ $result1 = mysqli_fetch_assoc(mysqli_query($conn, $sql));
 	$lastname = $result1['lastname'];
 	$facility = $result1['facility'];
 	$email = $result1['email'];
-
 	
 if(!$result1){
 	$error = $error." and empty employee result";
 }
 //Get Visitor Information
-
 $sql = "SELECT * FROM Visitors WHERE visitor_netid='$visitor_netid'";
 $result2 = mysqli_fetch_assoc(mysqli_query($conn, $sql));
 	$visitor_netid = $result2['visitor_netid'];
 	$visitor_firstname = $result2['firstname'];
 	$visitor_lastname = $result2['lastname'];
-
-
 if(!$result2){
 	$error = $error." and empty visitor result";
 }
-
 //Get Visitor's Abilities Information
 $sql = "SELECT * FROM Abilities WHERE visitor_netid='$visitor_netid'";
 $result3 = mysqli_query($conn, $sql);
 $abilities = array();//array to hold the visitor's abilities info
-
 //Create an array of ability and corresponding employee/facility info
 $ability_count = 0;
 while($row1 = mysqli_fetch_assoc($result3)) {
@@ -67,164 +56,54 @@ while($row1 = mysqli_fetch_assoc($result3)) {
 	
 	$ability_count++;
 }
-
 mysqli_close($conn);
 ?>
 
 <!--WEBPAGE HTML-->
 <html>
 	<head>
-		<title>
-			UR XFAC - Portal
-		</title>
-		
-		<style>
-			body {
-				background-color: #f2f2f2;
-				color: #000000;
-				font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-				font-weight: 300;
-				font-size: 16px;
-			}
-			
-			#nav {
-				text-align: center;
-				width: 100%;
-			}
-			
-			.logo {
-				padding-left: 20px;
-				display: inline;
-				float:left;
-			}
-			
-			nav {
-				background-color: #ffffff;
-				border-radius: 5px;
-				display: inline-block;
-				margin: 10px 20px 10px 20px;
-				overflow: hidden;
-				width: 85%;
-			}
-
-			nav ul {
-				margin: 0;
-				padding: 0;
-				text-align: left;
-			}
-
-			nav ul li {
-				display: inline-block;
-				list-style-type: none;
-
-				-webkit-transition: all 0.2s;
-				-moz-transition: all 0.2s;
-				-ms-transition: all 0.2s;
-				-o-transition: all 0.2s;
-				transition: all 0.2s; 
-			}
-
-			nav > ul > li > a {
-				color: #000000;
-				display: block;
-				line-height: 55px;
-				padding: 0 24px;
-				text-decoration: none;
-			}
-
-			nav > ul > li:hover {
-				background-color: rgb(40, 44, 47);
-			}
-
-			nav > ul > li:hover > a {
-				color: rgb(255, 255, 255);
-			}
-			
-			#employeeInfo,
-			#info {
-				border-collapse: collapse;
-				border: 2px solid #808080;
-			}
-
-			#employeeInfo td,
-			#info td {
-				border: 1px solid #808080;
-			}
-			
-			#employeeInfo tr:nth-child(odd),
-			#info tr:nth-child(odd) {
-				background-color: #e6e6e6;
-			}
-			
-			#employeeInfo tr:nth-child(even),
-			#info tr:nth-child(even) {
-				background-color: #ffffff;
-			}
-			
-			#employeeInfo tr:first-child,
-			#info tr:first-child {
-				background-color: #99b3e6;
-			}
-			
-			#abilities {
-				border-collapse: collapse;
-				border: none;
-				background-color: inherit;
-			}
-			
-			#abilities tr {
-				text-align: left;
-			}
-			
-			#abilities td {
-				border: none;
-			}
-			
-			#abilities tr:first-child, #abilities tr:nth-child(n) {
-				background-color: inherit;
-			}
-		</style>
+		<title>UR XFAC - Portal</title>
+		<?php include 'header.php' ?>
+		<link rel="stylesheet" type="text/css" href="css/portalTables.css">
 	</head>
-<body>
-<script>
-//ABILITY ADDITION FORM UPDATER
-	function addAbility(netid){
-		var div = document.getElementById("editability");
-		div.innerHTML = "";//Clear the div content
-	
-		div.innerHTML += "Add an ability for " + netid + ":<br />";
-		div.innerHTML += "<form>";
-		div.innerHTML += "Ability: <input type = \"text\" id=\"ability\" ><br />";
-		div.innerHTML += "Note: <input type = \"text\" id=\"note\"><br />";
-		div.innerHTML += "Date: <input type = \"text\" id=\"date\"><br />";
-		div.innerHTML += "<input type=\"submit\" value=\"Submit\"></form>";
+	<body>
+		<script type="text/javascript">
+		//ABILITY ADDITION FORM UPDATER
+		function addAbility(netid){
+			var div = document.getElementById("editability");
+			div.innerHTML = "";//Clear the div content
 		
-	}
-//ABILITY EDITION FORM UPDATER
-	function editAbility(id){
-		var div = document.getElementById("editability");
-		div.innerHTML = "";//Clear the div content
-		
-		var xmlhttp = new XMLHttpRequest();
-		
-		xmlhttp.onreadystatechange = function(){
-			if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
-				
-				var obj = JSON.parse(xmlhttp.responseText);
-				div.innerHTML += "Edit the following ability for " + obj.Ability[0].visitor_netid + ":<br />";
-				div.innerHTML += "<form>";
-				div.innerHTML += "Ability: <input type = \"text\" id=\"ability\" value=\"" + obj.Ability[0].ability + "\"><br />";
-				div.innerHTML += "Note: <input type = \"text\" id=\"note\" value=\"" + obj.Ability[0].note + "\"><br />";
-				div.innerHTML += "Date: <input type = \"text\" id=\"date\" value=\"" + obj.Ability[0].date + "\"><br />";
-				div.innerHTML += "<input type=\"submit\" value=\"Submit\"></form>";
-			}	
-		
-		};
-		xmlhttp.open("GET", "getAbilityInfo.php?q=" + id, true);
-		xmlhttp.send();
-	}
-
-//INFORMATION TABLE UPDATER
+			div.innerHTML += "Add an ability for " + netid + ":<br />";
+			div.innerHTML += "<form>";
+			div.innerHTML += "Ability: <input type = \"text\" id=\"ability\" ><br />";
+			div.innerHTML += "Note: <input type = \"text\" id=\"note\"><br />";
+			div.innerHTML += "Date: <input type = \"text\" id=\"date\"><br />";
+			div.innerHTML += "<input type=\"submit\" value=\"Submit\"></form>";
+		}
+		//ABILITY EDITION FORM UPDATER
+		function editAbility(id){
+			var div = document.getElementById("editability");
+			div.innerHTML = "";//Clear the div content
+			
+			var xmlhttp = new XMLHttpRequest();
+			
+			xmlhttp.onreadystatechange = function(){
+				if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+					
+					var obj = JSON.parse(xmlhttp.responseText);
+					div.innerHTML += "Edit the following ability for " + obj.Ability[0].visitor_netid + ":<br />";
+					div.innerHTML += "<form>";
+					div.innerHTML += "Ability: <input type = \"text\" id=\"ability\" value=\"" + obj.Ability[0].ability + "\"><br />";
+					div.innerHTML += "Note: <input type = \"text\" id=\"note\" value=\"" + obj.Ability[0].note + "\"><br />";
+					div.innerHTML += "Date: <input type = \"text\" id=\"date\" value=\"" + obj.Ability[0].date + "\"><br />";
+					div.innerHTML += "<input type=\"submit\" value=\"Submit\"></form>";
+				}	
+			
+			};
+			xmlhttp.open("GET", "getAbilityInfo.php?q=" + id, true);
+			xmlhttp.send();
+		}
+		//INFORMATION TABLE UPDATER
 		function displayInfo(str){
 			
 			var table = document.getElementById("info");
@@ -234,10 +113,9 @@ mysqli_close($conn);
 			}*/
 			var xmlhttp = new XMLHttpRequest();
 			
+			console.log("test");
 			xmlhttp.onreadystatechange = function(){
-
 				if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
-				
 					var obj = JSON.parse(xmlhttp.responseText);
 					//insert a row after the header row (i.e. after the first row)
 					var row = table.insertRow(1);
@@ -248,7 +126,7 @@ mysqli_close($conn);
 					if(obj.Abilities.length == 0){
 						abilitiesTableString = "No Abilities on Record -- ";
 					} else {
-						abilitiesTableString = "<table width=100% border=\"0\" cellpadding=\"5\">";
+						abilitiesTableString = "<table id=\"Abilities\" width=100% border=\"0\" cellpadding=\"5\">";
 						
 						abilitiesTableString += "<tr><th>Ability</th><th>Facility</th><th>Date</th><th>Note</th><th></th></tr>";
 						//Insert all ability rows after header row
@@ -269,13 +147,8 @@ mysqli_close($conn);
 			xmlhttp.send();
 				
 		}
-
-
 		//SEARCH TABLE UPDATER
 		function showVisitors(str){
-		
-		
-		
 			var table = document.getElementById("possVisitors");
 			//clear the table to remove old results and indicators
 			for(var i=0; i <= table.rows.length; i++){
@@ -294,11 +167,9 @@ mysqli_close($conn);
 				table.insertRow(0).insertCell(0).innerHTML = "Type to Search";
 				return;
 			} else {
-				
 				var xmlhttp = new XMLHttpRequest();
 				
 				xmlhttp.onreadystatechange = function(){
-
 					if(xmlhttp.readyState == 3 && xmlhttp.status == 200){
 						//clear table to prevent result stacking
 						for(var i=0; i <= table.rows.length; i++){
@@ -324,69 +195,61 @@ mysqli_close($conn);
 				xmlhttp.send();
 			}
 		}
-</script>
+		</script>
 
-<div id="nav">
-	<img class="logo" src="URXFAC.png"/>
-	<nav>
-		<ul>
-			<!-- Comments to remove whitespace between li elements -->
-			<li><a href="home.php">Home</a></li><!--
-		 --><li><a href="profile.php">Profile</a></li><!--
-		 --><li><a href="portal.php">Portal</a></li><!--
-		 --><li><a href="Logout.php">Logout</a></li>
-		</ul>
-	</nav>
-</div>
+		<?php include 'navbar.php'; ?>
 
-<h1 style="font-family:verdana;text-align:center">
-	Portal
-</h1></br>
+		<h1 style="text-align: center;">
+			Portal
+		</h1>
+		</br>
 
-<!--Employee Info Table-->
-<div>
-<table id="employeeInfo" width="100%" border="1" cellpadding="10">
-<tr>
-<th>My Name</th>
-<th>My NetID</th>
-<th>My Facility</th>
-<th>My Email</th>
-</tr>
-<tr>
-<td><?php echo $firstname." ".$lastname ?></td>
-<td><?php echo $employee_netid ?></td>
-<td><?php echo $facility ?></td>
-<td><?php echo $email ?></td>
-</tr>
-</table>
-<hr />
-</div>
+		<!--Employee Info Table-->
+		<div style="width: 90%; margin: 0px auto;">
+			<table id="employeeInfo" width="100%">
+				<tr>
+					<th>My Name</th>
+					<th>My NetID</th>
+					<th>My Facility</th>
+					<th>My Email</th>
+				</tr>
+				<tr>
+					<td><?php echo $firstname." ".$lastname ?></td>
+					<td><?php echo $employee_netid ?></td>
+					<td><?php echo $facility ?></td>
+					<td><?php echo $email ?></td>
+				</tr>
+			</table>
+			<hr/>
+		</div>
 
-<!--Visitor Account Search
-	URL Constructing Script-->
-<div>
-Search by Visitor NetID or Name: 
-<form>
-	<input type = "text" onkeyup="showVisitors(this.value)"><br />
+		<!--Visitor Account Search
+			URL Constructing Script-->
+		<div style="width: 90%; margin: 0px auto;">
+			Search by Visitor NetID or Name:
+			<form role="form">
+				<input type="text" class="form-control" onkeyup="showVisitors(this.value)">
+				<br/>
 
-	<table id="possVisitors">
-	<tr>
-		<td>Type to Search</td>
-	</tr>
-	</table>
-</form><br />
+				<table id="possVisitors">
+				<tr>
+					<td>Type to Search</td>
+				</tr>
+				</table>
+			</form>
+			<br/>
 
-<table id="info" width="100%" border="1" cellpadding="10">
-	<tr>
-		<th width=15%>Visitor Name</th>
-		<th width=15%>Visitor NetID</th>
-		<th>Abilities</th>
-	</tr>
-</table>
+			<table id="info" width="100%">
+				<tr>
+					<th width=15%>Visitor Name</th>
+					<th width=15%>Visitor NetID</th>
+					<th>Abilities</th>
+				</tr>
+			</table>
 
-<div id="editability" width="100%" border="1" cellpadding="10">
-</div>
-
-</div>
-</body>
+			<div id="editability"></div>
+		</div>
+		
+		<br/>
+	</body>
 </html>

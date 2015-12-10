@@ -3,116 +3,67 @@ Moses Chen - mchen37@u.rochester.edu
 Yaron Adar - yadar@u.rochester.edu
 -->
 <?php
-if (isset($_COOKIE['netid']) && isset($_COOKIE['pass'])) {
+$verified = (include 'verifyCookie.php');
+if ($verified) {
     header("Location: profile.php");
     exit;
 }
 ?>
 <html>
 	<head>
-		<title>
-			UR XFAC - Registration
-		</title>
-		
-		<style>
-			body {
-				background-color: #f2f2f2;
-				color: #000000;
-				font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-				font-weight: 300;
-				font-size: 16px;
-			}
-			
-			#nav {
-				text-align: center;
-				width: 100%;
-			}
-			
-			.logo {
-				padding-left: 20px;
-				display: inline;
-				float:left;
-			}
-			
-			nav {
-				background-color: #ffffff;
-				border-radius: 5px;
-				display: inline-block;
-				margin: 10px 20px 10px 20px;
-				overflow: hidden;
-				width: 85%;
-			}
-
-			nav ul {
-				margin: 0;
-				padding: 0;
-				text-align: left;
-			}
-
-			nav ul li {
-				display: inline-block;
-				list-style-type: none;
-
-				-webkit-transition: all 0.2s;
-				-moz-transition: all 0.2s;
-				-ms-transition: all 0.2s;
-				-o-transition: all 0.2s;
-				transition: all 0.2s; 
-			}
-
-			nav > ul > li > a {
-				color: #000000;
-				display: block;
-				line-height: 55px;
-				padding: 0 24px;
-				text-decoration: none;
-			}
-
-			nav > ul > li:hover {
-				background-color: rgb(40, 44, 47);
-			}
-
-			nav > ul > li:hover > a {
-				color: rgb(255, 255, 255);
-			}
-			
-			#registration {
-				text-align: center;
-			}
-		</style>
+		<title>UR XFAC - Registration</title>
+		<?php include 'header.php' ?>
 	</head>
 	<body>
-		<div id="nav">
-			<img class="logo" src="URXFAC.png"/>
-			<nav>
-				<ul>
-					<!-- Comments to remove whitespace between li elements -->
-					<li><a href="home.php">Home</a></li><!--
-				 --><li><a href="profile.php">Profile</a></li><!--
-				 --><li><a href="portal.php">Portal</a></li><!--
-				 --><li><a href="login.php">Login</a></li><!--
-				 --><li><a href="registration.php">Registration</a></li>
-				</ul>
-			</nav>
-		</div>
+		<?php include 'navbar.php'; ?>
 		
-		<h1 style="font-family:verdana;text-align:center">
+		<h1 style="text-align:center;">
 			Registration
 		</h1>
 		
-		<br/>
+		<?php
+		if (isset($_GET['error'])) {
+			$error = $_GET['error'];
+		?>
+		<?php if ($error == 0) : ?>
+			<div style="text-align:center">
+				Account successfully registered.
+			</div>
+			</br>
+		<?php elseif ($error == 1) : ?>
+			<div style="text-align:center">
+				Account with NetID already exists. Please try again.
+			</div>
+			</br>
+		<?php elseif ($error == 2) : ?>
+			<div style="text-align:center">
+				Error while registering. Please try again.
+			</div>
+			</br>
+		<?php else : ?>
+			<div style="text-align:center">
+				Unknown error. Please try again.
+			</div>
+			</br>
+		<?php endif; } ?>
 		
-		<div id="registration" style="width:25%; margin: 0px auto; text-align:left">
-			<form method="post" action="employeereg.php">
-				NetID: <input name="employee_netid" type=text size="30"/><br/>
-				Password: <input name="password" type=password size="30"/><br/>
-				First Name: <input name="firstname" type=text size="30"/><br/>
-				Last Name: <input name="lastname" type=text size="30"/><br/>
-				Facility Name: <input name="facility" type=text size="30"/><br/>
-				UR Email: <input name="email" type=text size="30"/><br/>
+		<div class="container" style="width:60%; margin:0px auto; text-align:left;">
+			<form role="form" method="post" action="employeereg.php">
+				<div class="row">
+					<div class="col-xs-6">
+					NetID: <input name="employee_netid" class="form-control" type=text size="30"/><br/>
+					Password: <input name="password" class="form-control" type=password size="30"/><br/>
+					UR Email: <input name="email" class="form-control" type=text size="30"/><br/>
+					</div>
+					<div class="col-xs-6">
+					First Name: <input name="firstname" class="form-control" type=text size="30"/><br/>
+					Last Name: <input name="lastname" class="form-control" type=text size="30"/><br/>
+					Facility Name: <input name="facility" class="form-control" type=text size="30"/><br/>
+					</div>
+				</div>
 				<br/>
 				<div style="text-align: center;">
-					<input type="submit" value="Submit"/> <input type="reset"value="Cancel"/>
+					<input type="submit" class="btn btn-default" value="Register"/> <input type="reset" class="btn btn-default" value="Cancel"/>
 				</div>
 			</form>
 		</div>

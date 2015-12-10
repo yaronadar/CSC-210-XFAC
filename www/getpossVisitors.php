@@ -1,4 +1,7 @@
 <?php
+//Moses Chen - mchen37@u.rochester.edu
+//Yaron Adar - yadar@u.rochester.edu
+
 //Get input and initialize output
 $attempt = $_REQUEST["q"];
 $return = array();
@@ -38,7 +41,5 @@ if($attempt != ""){
 		}
 	}
 }
-
 echo "{\"Visitors\":".json_encode($return)."}";
-
 ?>

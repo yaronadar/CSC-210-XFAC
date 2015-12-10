@@ -1,0 +1,41 @@
+#employeeInfo,
+#info {
+	border-collapse: collapse;
+	border: 2px solid #808080;
+}
+#employeeInfo td, #employeeInfo th,
+#info td, #info th {
+	border: 1px solid #808080;
+	padding: 10px;
+}
+#employeeInfo tr:nth-child(odd),
+#info tr:nth-child(odd) {
+	background-color: #e6e6e6;
+}
+#employeeInfo tr:nth-child(even),
+#info tr:nth-child(even) {
+	background-color: #ffffff;
+}
+#employeeInfo tr:first-child,
+#info tr:first-child {
+	background-color: #99b3e6;
+}
+#abilities {
+	border-collapse: collapse;
+	border: none;
+	background-color: inherit;
+}
+#abilities tr {
+	text-align: left;
+}
+#abilities th {
+	border: none;
+	padding: 0px;
+}
+#abilities td {
+	border: none;
+	padding: 0px;
+}
+#abilities tr:first-child, #abilities tr:nth-child(n) {
+	background-color: inherit;
+}
